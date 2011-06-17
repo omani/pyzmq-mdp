@@ -22,8 +22,8 @@ __license__ = """
     along with MDP.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-__author__ = 'Guido Goldstein'
-__email__ = 'gst-py@a-nugget.de'
+__author__ = 'shykes (Solomon Hykes)'
+__email__ = 'solomon.hykes@gmail.com'
 
 
 from setuptools import setup
