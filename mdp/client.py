@@ -114,6 +114,8 @@ class MDPClient(object):
         """
         if not self.can_send:
             raise InvalidStateError()
+        if type(msg) in (str, unicode):
+            msg = [msg]
         # prepare full message
         to_send = self._proto_prefix[:]
         to_send.extend(msg)
