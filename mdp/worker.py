@@ -170,12 +170,10 @@ class MDPWorker(object):
 
         msg is a list w/ the message parts
         """
-        # 1st part is empty
-        msg.pop(0)
-        # 2nd part is protocol version
+        # 1st part is protocol version
         # TODO: version check
         proto = msg.pop(0)
-        # 3nd part is message type
+        # 2nd part is message type
         msg_type = msg.pop(0)
         # XXX: hardcoded message types!
         # any message resets the liveness counter
