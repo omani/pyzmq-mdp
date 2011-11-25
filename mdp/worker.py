@@ -115,7 +115,7 @@ class MDPWorker(object):
         self.send_hb()
         if self.curr_liveness >= 0:
             return
-        print '%.3f lost connection' % time.time()
+        ## print '%.3f lost connection' % time.time()
         # ouch, connection seems to be dead
         self.shutdown()
         # try to recreate it
@@ -170,19 +170,20 @@ class MDPWorker(object):
 
         msg is a list w/ the message parts
         """
-        # 1st part is protocol version
+        # 1st part is empty
+        msg.pop(0)
+        # 2nd part is protocol version
         # TODO: version check
         proto = msg.pop(0)
-        # 2nd part is message type
+        # 3rd part is message type
         msg_type = msg.pop(0)
         # XXX: hardcoded message types!
         # any message resets the liveness counter
         self.need_handshake = False
         self.curr_liveness = self.HB_LIVENESS
-        if msg_type == '\x05': # disconnect
-            print '    DISC'
+        if msg_type == b'\x05': # disconnect
             self.curr_liveness = 0 # reconnect will be triggered by hb timer
-        elif msg_type == '\x02': # request
+        elif msg_type == b'\x02': # request
             # remaining parts are the user message
             envelope, msg = split_address(msg)
             envelope.append(b'')
