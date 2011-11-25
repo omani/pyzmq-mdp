@@ -198,6 +198,8 @@ def mdp_request(socket, service, msg, timeout=None):
     """
     if not timeout or timeout < 0.0:
         timeout = None
+    if type(msg) in (str, unicode):
+        msg = [msg]
     to_send = [PROTO_VERSION, service]
     to_send.extend(msg)
     socket.send_multipart(to_send)
