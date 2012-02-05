@@ -22,4 +22,5 @@ Authors
 
  * Guido Goldstein (https://github.com/guidog)
 
- * Solomon Hykes 
+ * Solomon Hykes (https://github.com/shykes)
+
