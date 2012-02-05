@@ -20,5 +20,6 @@ shallow wrapper of the C API.
 Authors
 -------
 
-Guido Goldstein (https://github.com/guidog)
-Solomon Hykes 
+ * Guido Goldstein (https://github.com/guidog)
+
+ * Solomon Hykes 
