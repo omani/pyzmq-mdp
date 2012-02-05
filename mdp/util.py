@@ -42,7 +42,7 @@ def socketid2hex(sid):
 #
 
 def split_address(msg):
-    """Function to split return Id and message received by XREP.
+    """Function to split return Id and message received by ROUTER socket.
 
     Returns 2-tuple with return Id and remaining message parts.
     Empty frames after the Id are stripped.
@@ -53,7 +53,7 @@ def split_address(msg):
             ret_ids.append(p)
         else:
             break
-    return (ret_ids, msg[i+1:])
+    return (ret_ids, msg[i + 1:])
 #
 ###
 

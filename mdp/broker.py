@@ -22,13 +22,11 @@ __author__ = 'Guido Goldstein'
 __email__ = 'gst-py@a-nugget.de'
 
 
-from pprint import pprint
-
 import zmq
 from zmq.eventloop.zmqstream import ZMQStream
 from zmq.eventloop.ioloop import PeriodicCallback
 
-from util import socketid2hex, split_address
+from util import split_address
 
 ###
 
@@ -47,7 +45,7 @@ class MDPBroker(object):
     This base class defines the overall functionality and the API. Subclasses are
     ment to implement additional features (like logging).
 
-    The broker uses ØMQ XREQ sockets to deal witch clients and workers. These sockets
+    The broker uses ØMQ ROUTER sockets to deal witch clients and workers. These sockets
     are wrapped in pyzmq streams to fit well into IOLoop.
 
     .. note::
@@ -74,12 +72,12 @@ class MDPBroker(object):
     def __init__(self, context, main_ep, opt_ep=None, worker_q=None):
         """Init MDPBroker instance.
         """
-        socket = context.socket(zmq.XREP)
+        socket = context.socket(zmq.ROUTER)
         socket.bind(main_ep)
         self.main_stream = ZMQStream(socket)
         self.main_stream.on_recv(self.on_message)
         if opt_ep:
-            socket = context.socket(zmq.XREP)
+            socket = context.socket(zmq.ROUTER)
             socket.bind(opt_ep)
             self.client_stream = ZMQStream(socket)
             self.client_stream.on_recv(self.on_message)

@@ -56,7 +56,7 @@ class MDPWorker(object):
 
     """Class for the MDP worker side.
 
-    Thin encapsulation of a zmq.XREQ socket.
+    Thin encapsulation of a zmq.DEALER socket.
     Provides a send method with optional timeout parameter.
 
     Will use a timeout to indicate a broker failure.
@@ -88,7 +88,7 @@ class MDPWorker(object):
     def _create_stream(self):
         """Helper to create the socket and the stream.
         """
-        socket = self.context.socket(zmq.XREQ)
+        socket = self.context.socket(zmq.DEALER)
         ioloop = IOLoop.instance()
         self.stream = ZMQStream(socket, ioloop)
         self.stream.on_recv(self._on_message)
