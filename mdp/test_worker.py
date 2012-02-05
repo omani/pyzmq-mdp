@@ -124,11 +124,14 @@ class Test_MDPWorker(unittest.TestCase):
     def send_req(self):
         data = ['AA', 'bb']
         msg = [self.target, b'MPDW01', chr(2), self.target, b''] + data
-        print 'borker sending:',
+        print 'broker sending:',
         pprint(msg)
         self.broker.send_multipart(msg)
         return
 
+    def stop_test(self):
+        IOLoop.instance().stop()
+        return
     # tests follow
 
     def test_01_simple_01(self):
@@ -137,8 +140,10 @@ class Test_MDPWorker(unittest.TestCase):
         self._start_broker()
         time.sleep(0.2)
         worker = MyWorker(self.context, self.endpoint, self.service)
-        sender = DelayedCallback(self.send_req, 1000)
+        sender = DelayedCallback(self.send_req, 500)
+        stopper = DelayedCallback(self.stop_test, 2500)
         sender.start()
+        stopper.start()
         IOLoop.instance().start()
         worker.shutdown()
         self._stop_broker()
