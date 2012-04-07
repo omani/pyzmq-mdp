@@ -80,6 +80,7 @@ class Test_MDPWorker(unittest.TestCase):
             print 'broker received:',
             pprint(msg)
         self.target = msg.pop(0)
+        marker_frame = msg.pop(0)
         if msg[1] == chr(1): # ready
             print 'READY'
             self.target = msg[0]
@@ -117,13 +118,13 @@ class Test_MDPWorker(unittest.TestCase):
 
     def _tick(self):
         if self.broker and self.target:
-            msg = [self.target, b'MPDW01', chr(4)]
+            msg = [self.target, b'', b'MPDW01', chr(4)]
             self.broker.send_multipart(msg)
         return
 
     def send_req(self):
         data = ['AA', 'bb']
-        msg = [self.target, b'MPDW01', chr(2), self.target, b''] + data
+        msg = [self.target, b'', b'MPDW01', chr(2), self.target, b''] + data
         print 'broker sending:',
         pprint(msg)
         self.broker.send_multipart(msg)
