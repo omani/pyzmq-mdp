@@ -116,8 +116,8 @@ class Test_MDPClient(unittest.TestCase):
         """Test MDPclient simple create.
         """
         client = MDPClient(self.context, self.endpoint, self.service)
-        self.assertEquals(self.endpoint, client.endpoint)
-        self.assertEquals(self.service, client.service)
+        self.assertEqual(self.endpoint, client.endpoint)
+        self.assertEqual(self.service, client.service)
         client.shutdown()
         return
 
@@ -129,13 +129,13 @@ class Test_MDPClient(unittest.TestCase):
         client.request(b'XXX')
         IOLoop.instance().start()
         client.shutdown()
-        self.assertEquals(len(self._msgs), 1)
+        self.assertEqual(len(self._msgs), 1)
         rmsg = self._msgs[0]
         # msg[0] is identity of sender
-        self.assertEquals(rmsg[1], b'') # routing delimiter
-        self.assertEquals(rmsg[2], client._proto_version)
-        self.assertEquals(rmsg[3], self.service)
-        self.assertEquals(rmsg[4], b'XXX')
+        self.assertEqual(rmsg[1], b'') # routing delimiter
+        self.assertEqual(rmsg[2], client._proto_version)
+        self.assertEqual(rmsg[3], self.service)
+        self.assertEqual(rmsg[4], b'XXX')
         self._stop_broker()
         return
 
@@ -148,13 +148,13 @@ class Test_MDPClient(unittest.TestCase):
         client.request(mydata)
         IOLoop.instance().start()
         client.shutdown()
-        self.assertEquals(len(self._msgs), 1)
+        self.assertEqual(len(self._msgs), 1)
         rmsg = self._msgs[0]
         # msg[0] is identity of sender
-        self.assertEquals(rmsg[1], b'') # routing delimiter
-        self.assertEquals(rmsg[2], client._proto_version)
-        self.assertEquals(rmsg[3], self.service)
-        self.assertEquals(rmsg[4:], mydata)
+        self.assertEqual(rmsg[1], b'') # routing delimiter
+        self.assertEqual(rmsg[2], client._proto_version)
+        self.assertEqual(rmsg[3], self.service)
+        self.assertEqual(rmsg[4:], mydata)
         self._stop_broker()
         return
 
@@ -174,7 +174,7 @@ class Test_MDPClient(unittest.TestCase):
         client.request(b'XXX', 20) # 20 millisecs timeout
         IOLoop.instance().start()
         client.shutdown()
-        self.assertEquals(client.timed_out, True)
+        self.assertEqual(client.timed_out, True)
         return
 
     def test_04_receive_01(self):
@@ -186,10 +186,10 @@ class Test_MDPClient(unittest.TestCase):
         IOLoop.instance().start()
         client.shutdown()
         self._stop_broker()
-        self.assertEquals(True, hasattr(client, b'last_msg'))
-        self.assertEquals(3, len(client.last_msg))
-        self.assertEquals(b'REPLY', client.last_msg[-1])
-        self.assertEquals(self.service, client.last_msg[-2])
+        self.assertEqual(True, hasattr(client, 'last_msg'))
+        self.assertEqual(3, len(client.last_msg))
+        self.assertEqual(b'REPLY', client.last_msg[-1])
+        self.assertEqual(self.service, client.last_msg[-2])
         return
 #
 ###

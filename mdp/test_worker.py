@@ -45,7 +45,7 @@ class MyWorker(MDPWorker):
     HB_LIVENESS = 10
 
     def on_request(self, msg):
-        answer = ['REPLY'] + msg
+        answer = [b'REPLY'] + msg
         self.reply(answer)
         return
 #
@@ -81,14 +81,14 @@ class Test_MDPWorker(unittest.TestCase):
             pprint(msg)
         self.target = msg.pop(0)
         marker_frame = msg.pop(0)
-        if msg[1] == chr(1): # ready
+        if msg[1] == b'\x01': # ready
             print 'READY'
             self.target = msg[0]
             return
-        if msg[1] == chr(4): # ready
+        if msg[1] == b'\x04': # ready
             print 'HB'
             return
-        if msg[1] == chr(3): # reply
+        if msg[1] == b'\x03': # reply
             IOLoop.instance().stop()
             return
         return
@@ -118,13 +118,13 @@ class Test_MDPWorker(unittest.TestCase):
 
     def _tick(self):
         if self.broker and self.target:
-            msg = [self.target, b'', b'MPDW01', chr(4)]
+            msg = [self.target, b'', b'MPDW01', b'\x04']
             self.broker.send_multipart(msg)
         return
 
     def send_req(self):
-        data = ['AA', 'bb']
-        msg = [self.target, b'', b'MPDW01', chr(2), self.target, b''] + data
+        data = [b'AA', b'bb']
+        msg = [self.target, b'', b'MPDW01', b'\x02', self.target, b''] + data
         print 'broker sending:',
         pprint(msg)
         self.broker.send_multipart(msg)

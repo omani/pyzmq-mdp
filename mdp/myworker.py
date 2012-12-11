@@ -35,7 +35,7 @@ class MyWorker(MDPWorker):
 
     def on_request(self, msg):
         self.count = self.count + 1
-        answer = ['REPLY'] + msg
+        answer = [b'REPLY'] + msg
         self.reply(answer)
         return
 #
@@ -43,7 +43,7 @@ class MyWorker(MDPWorker):
 
 if __name__ == '__main__':
     context = zmq.Context()
-    worker = MyWorker(context, "tcp://127.0.0.1:5555", "echo")
+    worker = MyWorker(context, "tcp://127.0.0.1:5555", b"echo")
     IOLoop.instance().start()
     worker.shutdown()
 
