@@ -24,7 +24,6 @@ __license__ = """
 __author__ = 'Guido Goldstein'
 __email__ = 'gst-py@a-nugget.de'
 
-from exceptions import UserWarning
 
 import zmq
 from zmq.eventloop.zmqstream import ZMQStream
@@ -114,7 +113,7 @@ class MDPClient(object):
         """
         if not self.can_send:
             raise InvalidStateError()
-        if type(msg) in (str, unicode):
+        if type(msg) in (bytes, unicode):
             msg = [msg]
         # prepare full message
         to_send = self._proto_prefix[:]
@@ -198,7 +197,7 @@ def mdp_request(socket, service, msg, timeout=None):
     """
     if not timeout or timeout < 0.0:
         timeout = None
-    if type(msg) in (str, unicode):
+    if type(msg) in (bytes, unicode):
         msg = [msg]
     to_send = [PROTO_VERSION, service]
     to_send.extend(msg)

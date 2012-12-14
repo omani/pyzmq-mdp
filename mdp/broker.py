@@ -86,10 +86,10 @@ class MDPBroker(object):
         self._workers = {}
         # services contain the worker queue and the request queue
         self._services = {}
-        self._worker_cmds = { '\x01': self.on_ready,
-                              '\x03': self.on_reply,
-                              '\x04': self.on_heartbeat,
-                              '\x05': self.on_disconnect,
+        self._worker_cmds = { b'\x01': self.on_ready,
+                              b'\x03': self.on_reply,
+                              b'\x04': self.on_heartbeat,
+                              b'\x05': self.on_disconnect,
                               }
         self.hb_check_timer = PeriodicCallback(self.on_timer, HB_INTERVAL)
         self.hb_check_timer.start()
@@ -476,7 +476,7 @@ class WorkerRep(object):
         Sends heartbeat to worker.
         """
         self.curr_liveness -= 1
-        msg = [ self.id, b'', self.proto, chr(4) ]
+        msg = [ self.id, b'', self.proto, b'\x01' ]
         self.stream.send_multipart(msg)
         return
 

@@ -28,7 +28,6 @@ __email__ = 'gst-py@a-nugget.de'
 
 import sys
 import time
-from exceptions import UserWarning
 from pprint import pprint
 
 import zmq
@@ -102,7 +101,7 @@ class MDPWorker(object):
     def _send_ready(self):
         """Helper method to prepare and send the workers READY message.
         """
-        ready_msg = [ b'', self._proto_version, chr(1), self.service ]
+        ready_msg = [ b'', self._proto_version, b'\x01', self.service ]
         self.stream.send_multipart(ready_msg)
         self.curr_liveness = self.HB_LIVENESS
         return
@@ -126,7 +125,7 @@ class MDPWorker(object):
     def send_hb(self):
         """Construct and send HB message to broker.
         """
-        msg = [ b'', self._proto_version, chr(4) ]
+        msg = [ b'', self._proto_version, b'\x04' ]
         self.stream.send_multipart(msg)
         return
 
@@ -187,7 +186,7 @@ class MDPWorker(object):
             # remaining parts are the user message
             envelope, msg = split_address(msg)
             envelope.append(b'')
-            envelope = [ b'', self._proto_version, '\x03'] + envelope # REPLY
+            envelope = [ b'', self._proto_version, b'\x03'] + envelope # REPLY
             self.envelope = envelope
             self.on_request(msg)
         else:
