@@ -476,7 +476,7 @@ class WorkerRep(object):
         Sends heartbeat to worker.
         """
         self.curr_liveness -= 1
-        msg = [ self.id, b'', self.proto, b'\x01' ]
+        msg = [ self.id, b'', self.proto, b'\x04' ]
         self.stream.send_multipart(msg)
         return
 
