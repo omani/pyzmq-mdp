@@ -32,5 +32,6 @@ setup(
     name        = 'mdp',
     package_dir = {'mdp': 'mdp'},
     packages    = ['mdp'],
-    zip_safe    = False
+    zip_safe    = False,
+    use_2to3    = True
 )
