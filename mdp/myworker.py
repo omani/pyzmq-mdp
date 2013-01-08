@@ -35,8 +35,7 @@ class MyWorker(MDPWorker):
 
     def on_request(self, msg):
         self.count = self.count + 1
-        answer = [b'REPLY'] + msg
-        self.reply(answer)
+        self.reply(msg)
         return
 #
 ###
