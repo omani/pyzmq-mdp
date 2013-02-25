@@ -256,8 +256,6 @@ class MDPBroker(object):
         try:
             wq, wr = self._services[service]
             cp, msg = split_address(msg)
-            # broker/client communication do not use command frames
-            msg = msg[1:]
             self.client_response(cp, service, msg)
             wq.put(wrep.id)
             if wr:
