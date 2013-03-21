@@ -173,7 +173,7 @@ class MDPClient(object):
 #
 ###
 
-from zmq.core.poll import select
+from zmq import select
 
 def mdp_request(socket, service, msg, timeout=None):
     """Synchronous MDP request.
