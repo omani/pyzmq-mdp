@@ -29,7 +29,7 @@ __email__ = 'solomon.hykes@gmail.com'
 from setuptools import setup
 
 setup(
-    name        = 'mdp',
+    name        = 'pyzmq-mdp',
     version     = '0.2',
     description = 'ZeroMQ MDP protocol in Python using pyzmq',
     author      = 'Guido Goldstein',
