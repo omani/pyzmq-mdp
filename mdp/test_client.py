@@ -95,7 +95,7 @@ class Test_MDPClient(unittest.TestCase):
     def _start_broker(self, do_reply=False):
         """Helper activating a fake broker in the ioloop.
         """
-        socket = self.context.socket(zmq.XREP)
+        socket = self.context.socket(zmq.ROUTER)
         self.broker = ZMQStream(socket)
         self.broker.socket.setsockopt(zmq.LINGER, 0)
         self.broker.bind(self.endpoint)
