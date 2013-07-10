@@ -250,7 +250,10 @@ class MDPBroker(object):
         :rtype: None
         """
         ret_id = rp[0]
-        wrep = self._workers[ret_id]
+        wrep = self._workers.get(ret_id)
+        if not wrep:
+            # worker not found, ignore message
+            return
         service = wrep.service
         # make worker available again
         try:

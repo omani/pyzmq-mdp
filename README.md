@@ -17,6 +17,10 @@ translations of the C examples. But pyzmq does offer more than a
 shallow wrapper of the C API.
 
 
+This is an example of how to use pyzmq, not a full blown solution
+for those who need one.
+
+
 Authors
 -------
 
