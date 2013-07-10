@@ -30,6 +30,11 @@ from setuptools import setup
 
 setup(
     name        = 'mdp',
+    version     = '0.2',
+    description = 'ZeroMQ MDP protocol in Python using pyzmq',
+    author      = 'Guido Goldstein',
+    author_email= 'gst-py@a-nugget.de',
+    url         = 'https://github.com/guidog/pyzmq-mdp',
     package_dir = {'mdp': 'mdp'},
     packages    = ['mdp'],
     zip_safe    = False,
