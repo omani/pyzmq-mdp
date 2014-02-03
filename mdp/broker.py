@@ -61,17 +61,21 @@ class MDPBroker(object):
     :type main_ep:     str
     :param opt_ep:     is an optional 2nd endpoint.
     :type opt_ep:      str
-    :param worker_q:   the class to be used for the worker-queue.
-    :type worker_q:    class
+    :param service_q:   the class to be used for the service worker-queue.
+    :type service_q:    class
     """
 
     CLIENT_PROTO = b'MDPC01'  #: Client protocol identifier
     WORKER_PROTO = b'MDPW01'  #: Worker protocol identifier
 
 
-    def __init__(self, context, main_ep, opt_ep=None, worker_q=None):
+    def __init__(self, context, main_ep, opt_ep=None, service_q=None):
         """Init MDPBroker instance.
         """
+        if service_q is None:
+            self.service_q = ServiceQueue
+        else:
+            self.service_q = service_q
         socket = context.socket(zmq.ROUTER)
         socket.bind(main_ep)
         self.main_stream = ZMQStream(socket)
@@ -84,7 +88,7 @@ class MDPBroker(object):
         else:
             self.client_stream = self.main_stream
         self._workers = {}
-        # services contain the worker queue and the request queue
+        # services contain the service queue and the request queue
         self._services = {}
         self._worker_cmds = { b'\x01': self.on_ready,
                               b'\x03': self.on_reply,
@@ -114,7 +118,7 @@ class MDPBroker(object):
             wq, wr = self._services[service]
             wq.put(wid)
         else:
-            q = ServiceQueue()
+            q = self.service_q()
             q.put(wid)
             self._services[service] = (q, [])
         return
