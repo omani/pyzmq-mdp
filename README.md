@@ -3,7 +3,7 @@ MDP - the Majordomo Protocol
 
 # RPC-MDP
 
-This is an extension to the MDP implementation of Guido Goldstein.
+Inspired by zerorpc (http://www.zerorpc.io/) I made this extension to the MDP implementation of Guido Goldstein.
 Now you can use this MDP (reliable ROUTER-DEALER pattern) for RPC (Remote Procedure Calls).
 
 Please check out:
