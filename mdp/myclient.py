@@ -4,5 +4,9 @@ import rpc
 import sys
 
 if __name__ == '__main__':
-    service = rpc.Client(worker=sys.argv[1])
-    print service.hello(msg='world')
+    sys.argv.pop(0)
+    service = rpc.Client(worker=sys.argv.pop(0))
+
+    uptime = service.uptime(timeout=10, async=True)
+    print service.hello()
+    print uptime.get()

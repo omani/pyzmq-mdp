@@ -4,6 +4,7 @@ from future.utils import iteritems
 
 import zmq
 import json
+import gevent.event
 from zmq.eventloop.ioloop import IOLoop
 
 from worker import MDPWorker
@@ -82,14 +83,23 @@ class Client(MDPClient):
         self._socket.setsockopt(zmq.LINGER, 0)
         self._socket.connect("tcp://127.0.0.1:5555")
 
-    def __call__(self, method, *args, **kwargs):
+    def __call__(self, method, async=False, timeout=2.0, *args, **kwargs):
         payload = json.dumps([method, args, kwargs])
-        res = mdp_request(self._socket, self.worker_address, payload, timeout=2.0)
 
-        if res:
-            return res[1]
-        else:
-            return 'Timeout!'
+        def _process_method():
+            res = mdp_request(self._socket, self.worker_address, payload, timeout=timeout)
+
+            if res:
+                return res[1]
+            else:
+                return 'Timeout!'
+
+        if async is False:
+            return _process_method()
+
+        async_result = gevent.event.AsyncResult()
+        gevent.spawn(_process_method).link(async_result)
+        return async_result
 
     def on_message(self, msg):
         print "Received:", repr(msg)

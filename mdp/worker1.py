@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import rpc
+import gevent
 
 
 class Methods(object):
 
-    def hello(self, msg):
-        return 'Hello {}'.format(msg)
+    def uptime(self):
+        gevent.sleep(3)
+        return "Hello"
 
-    def helloworld(self):
-        return 'Hello world!'
+    def hello(self):
+        ok = "LOL"
+        return ok
 
 
 if __name__ == '__main__':

@@ -48,4 +48,5 @@ Thumbs.db
 .externalToolBuilders
 
 # Python Files
-.venv/*
+.venv/
+venv/
