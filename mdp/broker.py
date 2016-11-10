@@ -35,6 +35,7 @@ HB_LIVENESS = 5    #: HBs to miss before connection counts as dead
 
 ###
 
+
 class MDPBroker(object):
 
     """The MDP broker class.
@@ -68,7 +69,6 @@ class MDPBroker(object):
     CLIENT_PROTO = b'MDPC01'  #: Client protocol identifier
     WORKER_PROTO = b'MDPW01'  #: Worker protocol identifier
 
-
     def __init__(self, context, main_ep, opt_ep=None, service_q=None):
         """Init MDPBroker instance.
         """
@@ -90,11 +90,11 @@ class MDPBroker(object):
         self._workers = {}
         # services contain the service queue and the request queue
         self._services = {}
-        self._worker_cmds = { b'\x01': self.on_ready,
-                              b'\x03': self.on_reply,
-                              b'\x04': self.on_heartbeat,
-                              b'\x05': self.on_disconnect,
-                              }
+        self._worker_cmds = {b'\x01': self.on_ready,
+                             b'\x03': self.on_reply,
+                             b'\x04': self.on_heartbeat,
+                             b'\x05': self.on_disconnect,
+                             }
         self.hb_check_timer = PeriodicCallback(self.on_timer, HB_INTERVAL)
         self.hb_check_timer.start()
         return
@@ -163,7 +163,7 @@ class MDPBroker(object):
         except KeyError:
             # not registered, ignore
             return
-        to_send = [ wid, self.WORKER_PROTO, b'\x05' ]
+        to_send = [wid, self.WORKER_PROTO, b'\x05']
         self.main_stream.send_multipart(to_send)
         self.unregister_worker(wid)
         return
@@ -383,7 +383,7 @@ class MDPBroker(object):
                 wr.append((proto, rp, msg))
                 return
             wrep = self._workers[wid]
-            to_send = [ wrep.id, b'', self.WORKER_PROTO, b'\x02']
+            to_send = [wrep.id, b'', self.WORKER_PROTO, b'\x02']
             to_send.extend(rp)
             to_send.append(b'')
             to_send.extend(msg)
@@ -447,6 +447,7 @@ class MDPBroker(object):
         return
 #
 
+
 class WorkerRep(object):
 
     """Helper class to represent a worker in the broker.
@@ -483,7 +484,7 @@ class WorkerRep(object):
         Sends heartbeat to worker.
         """
         self.curr_liveness -= 1
-        msg = [ self.id, b'', self.proto, b'\x04' ]
+        msg = [self.id, b'', self.proto, b'\x04']
         self.stream.send_multipart(msg)
         return
 
@@ -510,6 +511,7 @@ class WorkerRep(object):
         self.stream = None
         return
 #
+
 
 class ServiceQueue(object):
 
@@ -555,7 +557,7 @@ class ServiceQueue(object):
 #
 ###
 
-### Local Variables:
-### buffer-file-coding-system: utf-8
-### mode: python
-### End:
+# Local Variables:
+# buffer-file-coding-system: utf-8
+# mode: python
+# End:
