@@ -76,17 +76,27 @@ class Server(MDPWorker):
 
 class Client(MDPClient):
 
-    def __init__(self, worker, *args, **kwargs):
+    def __init__(self, worker):
         self.worker_address = worker
         self._context = zmq.Context()
         self._socket = self._context.socket(zmq.REQ)
         self._socket.setsockopt(zmq.LINGER, 0)
         self._socket.connect("tcp://127.0.0.1:5555")
 
-    def __call__(self, method, async=False, timeout=2.0, *args, **kwargs):
-        payload = json.dumps([method, args, kwargs])
+    def __call__(self, method, *args, **kwargs):
+        timeout = 2.0
+        async = False
+
+        if 'async' in kwargs:
+            async = kwargs['async']
+            del kwargs['async']
+
+        if 'timeout' in kwargs:
+            timeout = kwargs['timeout']
+            del kwargs['timeout']
 
         def _process_method():
+            payload = json.dumps([method, args, kwargs])
             res = mdp_request(self._socket, self.worker_address, payload, timeout=timeout)
 
             if res:
